@@ -1,0 +1,16 @@
+{
+    "name": "glpi-plugin/customercontacts",
+    "description": "GLPI Customer Contacts Plugin",
+    "version": "1.0.0",
+    "license": "GPL-3.0-or-later",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Your Name"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    }
+}
