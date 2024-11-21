@@ -24,14 +24,42 @@ if (empty($contacts)) {
    echo "<div class='alert alert-info'>Nenhum contato encontrado.</div>";
 } else {
    foreach ($contacts as $data) {
-      echo "<div class='contact-item'>";
-      echo "<div><strong>Nome:</strong> " . htmlspecialchars($data['name']) . "</div>";
+      echo "<div class='contact-card'>";
+      echo "<div class='contact-info'>";
+      echo "<strong>Nome:</strong> <span>" . htmlspecialchars($data['name']) . "</span>";
+      
       if (!empty($data['phone'])) {
-         echo "<div class='mt-2'><strong>Telefone:</strong> " . htmlspecialchars($data['phone']) . "</div>";
+         $phone = preg_replace("/[^0-9]/", "", $data['phone']);
+         echo "<strong>Telefone:</strong> <span><a href='tel:" . $phone . "'>" . htmlspecialchars($data['phone']) . "</a></span>";
+      } else {
+         echo "<strong>Telefone:</strong> <span>-</span>";
       }
+      
       if (!empty($data['email'])) {
-         echo "<div class='mt-2'><strong>Email:</strong> " . htmlspecialchars($data['email']) . "</div>";
+         echo "<strong>Email:</strong> <span><a href='mailto:" . htmlspecialchars($data['email']) . "'>" . htmlspecialchars($data['email']) . "</a></span>";
+      } else {
+         echo "<strong>Email:</strong> <span>-</span>";
       }
+
+      // Exibição do título
+      echo "<strong>Título:</strong> <span>";
+      if (!empty($data['usertitles_id'])) {
+         $userTitle = new UserTitle();
+         if ($userTitle->getFromDB($data['usertitles_id'])) {
+            echo htmlspecialchars($userTitle->fields['name']);
+         } else {
+            echo "-";
+         }
+      } else {
+         echo "-";
+      }
+      echo "</span>";
+      
+      echo "</div>";
+      echo "<div class='contact-actions'>";
+      echo "<button class='btn btn-sm btn-primary' onclick='editContact({$data['id']})'><i class='fas fa-edit'></i></button>";
+      echo "<button class='btn btn-sm btn-danger' onclick='deleteContact({$data['id']})'><i class='fas fa-trash'></i></button>";
+      echo "</div>";
       echo "</div>";
    }
 }
